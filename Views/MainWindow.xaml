@@ -1,0 +1,240 @@
+﻿<Window x:Class="MVVMFirma.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MVVMFirma"
+        mc:Ignorable="d"
+        Title="Expertglass" Height="350" Width="545" WindowState="Maximized" Icon="Content/Icons/expert-glass-iko.png" Language="pl-PL">
+    <Window.Resources>
+        <ResourceDictionary Source="MainWindowResources.xaml"/>
+    </Window.Resources>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="150" />
+            <ColumnDefinition Width="367*" />
+            <ColumnDefinition Width="40*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="30"/>
+        </Grid.RowDefinitions>
+        <!--menu-->
+        <Menu Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Margin="2">
+            <MenuItem Header="_Plik">
+                <MenuItem Header="Ustawienia" InputGestureText="Ctrl+U" >
+                    <MenuItem.Icon>
+                        <Image Source="Content/Icons/ic_settings_applications_black_24dp_1x.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Nowa zakładka" InputGestureText="Ctrl+T"/>
+                <MenuItem Header="Nowa okno" InputGestureText="Ctrl+N"/>
+                <Separator/>
+                <MenuItem Header="Zakończ" InputGestureText="Ctrl+X">
+                    <MenuItem.Icon>
+                        <Image Source="Content/Icons/close-box.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="_Magazyn">
+                <MenuItem Header="Dokumenty (PZ)" 
+                          InputGestureText="Ctrl+1" 
+                          Command="{Binding ShowAllPzCommand}" />
+                <Separator/>
+                <MenuItem Header="Dokumenty (WZ)"  InputGestureText="Ctrl+2"
+                          Command="{Binding ShowAllPracownikCommand}" />
+            </MenuItem>
+            <MenuItem Header="_Handel">
+                <MenuItem Header="Paragony" InputGestureText="F7" Command="{Binding CreateAdressCommand}"/>
+                <MenuItem Header="Faktury" InputGestureText="F6"  Command="{Binding ShowAllFakturyCommand}"/>
+                <Separator/>
+                <MenuItem Header="Raporty sprzedazy">
+                    <MenuItem Header="Dzienny">
+                        <MenuItem Header="Wzgledem sprzedawcy"/>
+                        <MenuItem Header="Wzgledem przychodu"/>
+                    </MenuItem>
+                    <MenuItem Header="Tygodniowy">
+                    </MenuItem>
+                    <MenuItem Header="Wg wybranego okresu" Command="{Binding ShowRaportSprzedazyCommand}">
+                    </MenuItem>
+                    <MenuItem Header="Wartość zakupów" Command="{Binding ShowWartoscZakpowCommand}">
+                    </MenuItem>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Stawki VAT" Command="{Binding ShowAllStawkiVatCommand}"/>
+            </MenuItem>
+            <MenuItem Header="_Narzędzia">
+                <MenuItem Header="Zmiana hasła dostępu..."/>
+                <MenuItem Header="Zmiana operatora...">
+                    <MenuItem.Icon>
+                        <Image Source="Content/Icons/account-switch.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Odczyt kodu kreskowego..." InputGestureText="F12">
+                    <MenuItem.Icon>
+                        <Image Source="Content/barcode-scan.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Zaplanuj trasę dostawy..." InputGestureText="F11">
+                    <MenuItem.Icon>
+                        <Image Source="Content/Icons/airplane-takeoff.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Wybór kontrahenta ..." InputGestureText="F10" Command="{Binding ShowAllKontrahenciCommand}"/>
+                <Separator/>
+                <MenuItem Header="Bieżąca data...">
+                    <MenuItem.Icon>
+                        <Image Source="Content/Icons/av-timer.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <Separator/>
+                <MenuItem Header="Opcje..." InputGestureText="Ctrl+F9">
+                    <MenuItem.Icon>
+                        <Image Source="Content/wrench.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                    <MenuItem Header="Jednostki" Command="{Binding ShowAllJednostkiCommand}"/>
+                    <MenuItem Header="Kraje" Command="{Binding ShowAllKrajeCommand}"/>
+                    <MenuItem Header="Dni tygodnia" Command="{Binding ShowAllDniTygodniaCommand}"/>
+                    <MenuItem Header="Statusy" Command="{Binding ShowAllStatusyCommand}"/>
+                    <MenuItem Header="Waluty" Command="{Binding ShowAllWalutyCommand}"/>
+                    <Separator/>
+                    <MenuItem Header="Trasy" Command="{Binding ShowAllTrasyCommand}"/>
+                </MenuItem>
+            </MenuItem>
+            <MenuItem Header="P_rodukcja">
+                <MenuItem Header="Wystaw zlecenie produkcyjne"/>
+                <MenuItem Header="Przeglądaj zlecenia..."/>
+                <Separator/>
+                <MenuItem Header="Parametry szkła" Command="{Binding ShowAllParametrySzkCommand}"/>
+            </MenuItem>
+            <MenuItem Header="P_omoc">
+                <MenuItem Header="Dokumentacja"/>
+                <Separator/>
+                <MenuItem Header="Wyślij do nas pocztę">
+                    <MenuItem.Icon>
+                        <Image Source="Content/Icons/email.png" Style="{StaticResource MenuItem-Image}" />
+                    </MenuItem.Icon>
+                </MenuItem>
+                <MenuItem Header="Odwiedź naszą stronę"/>
+                <MenuItem Header="Wizytówka..."/>
+            </MenuItem>
+        </Menu>
+        <!--wiersz z przyciskami - ToolBar-->
+        <ToolBar Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="3">
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image  Stretch="None" Source="Content/arrow-up-bold.png" />
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image  Stretch="None" Source="Content/arrow-left-bold.png" />
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image  Stretch="None" Source="Content/arrow-right-bold.png" />
+            </ToggleButton>
+            <Separator/>
+            <ToggleButton Style="{StaticResource ToggleButton1}"
+                          Command="{Binding LoadCommand}">
+                <Image Stretch="None" Source="Content/autorenew.png" />
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image  Stretch="None" Source="Content/floppy.png" />
+                <ToolTipService.ToolTip>
+                    <ToolTip Content = "Zapisz"    
+                             HorizontalOffset = "0" 
+                             VerticalOffset = "0" />
+                </ToolTipService.ToolTip>
+            </ToggleButton>
+            <Separator/>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image  Stretch="None" Source="Content/Icons/ic_settings_applications_black_24dp_1x.png" />
+            </ToggleButton>
+            <Separator/>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image  Stretch="None" Source="Content/Icons/chart-line.png" />
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}" 
+                          Command="{Binding ShowAllTrasyCommand}">
+                <Image Source="Content/Icons/airplane-takeoff.png" Stretch="None" />
+                <ToolTipService.ToolTip>
+                    <ToolTip Content = "Pokaż wszystkie trasy"    
+                             HorizontalOffset = "0" 
+                             VerticalOffset = "0" />
+                </ToolTipService.ToolTip>
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image Source="Content/unity.png" Stretch="None" />
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}">
+                <Image Source="Content/barcode-scan.png" Stretch="None" />
+            </ToggleButton>
+            <ToggleButton Style="{StaticResource ToggleButton1}" 
+                          Command="{Binding CreatePracownikCommand}">
+                <Image Source="Content/share-variant.png" Stretch="None" />
+            </ToggleButton>
+            <Separator Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Style="{StaticResource ToggleButton1-Separator}" />
+            <ToggleButton Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Style="{StaticResource ToggleButton1}">
+                <Image Source="Content/Icons/account.png" Stretch="None" />
+            </ToggleButton>
+            <Label  Content="Wyloguj" Grid.Column="2" Grid.Row="1" Grid.RowSpan="3" Style="{StaticResource Label1}" />
+        </ToolBar>
+        <!--wiersz operacji i przestrzeni roboczej-->
+        <Border Grid.Row="2" Grid.Column="0">
+            <!--<HeaderedContentControl Style="{StaticResource HeaderedContentControl-1}"/>-->
+            <HeaderedContentControl 
+                Header="Operacje" 
+                Content="{Binding Path=Commands}"
+                ContentTemplate="{StaticResource CommandsTemplate}"
+                Style="{StaticResource MainHCCStyle}"
+                />
+        </Border>
+        <Border Grid.Row="2" Grid.Column="1">
+            <!--<HeaderedContentControl Style="{StaticResource HeaderedContentControl-2}"/>-->
+            <HeaderedContentControl 
+                Header="Przestrzeń robocza"
+                Content="{Binding Path=Workspaces}"
+                ContentTemplate="{StaticResource WorkspacesTemplate}"
+                Style="{StaticResource MainHCCStyle}"
+                />
+        </Border>
+        <Image  Grid.Column="1" Grid.Row="2" Style="{StaticResource Image-logo}" Panel.ZIndex="-1" />
+        <!--wiersz paska stanu-->
+        <StatusBar Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="3" >
+            <Separator Style="{StaticResource StatusBar-Separator}">
+                <Separator.Background>
+                    <ImageBrush ImageSource="Content/Icons/drag-vertical.png" TileMode="FlipY" Stretch="Uniform"/>
+                </Separator.Background>
+            </Separator>
+            <StatusBarItem >
+                <TextBlock>
+                    Krysztal s.r.o.
+                </TextBlock>
+            </StatusBarItem>
+            <Separator Style="{StaticResource StatusBar-Separator}">
+                <Separator.Background>
+                    <ImageBrush ImageSource="Content/Icons/drag-vertical.png" TileMode="FlipY" Stretch="Uniform"/>
+                </Separator.Background>
+            </Separator>
+            <StatusBarItem Grid.Column="1" HorizontalContentAlignment="Right">
+                <Image Source="Content/Icons/account.png" Stretch="Fill" Height="18" Width="18" />
+            </StatusBarItem>
+            <StatusBarItem>
+                <TextBlock>
+                    Dawid Dyrek
+                </TextBlock>
+            </StatusBarItem>
+            <Separator Style="{StaticResource StatusBar-Separator}" HorizontalAlignment="Left">
+                <Separator.Background>
+                    <ImageBrush ImageSource="Content/Icons/drag-vertical.png" TileMode="FlipY" Stretch="Uniform" />
+                </Separator.Background>
+            </Separator>
+            <Separator Style="{StaticResource StatusBar-Separator}" HorizontalAlignment="Right">
+                <Separator.Background>
+                    <ImageBrush ImageSource="Content/Icons/drag-vertical.png" TileMode="FlipY" Stretch="Uniform" />
+                </Separator.Background>
+            </Separator>
+        </StatusBar>
+        <Image Grid.Column="2" Grid.Row="3" Style="{StaticResource Image-logo-footer}" />
+    </Grid>
+</Window>
